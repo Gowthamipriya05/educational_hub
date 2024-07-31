@@ -1,12 +1,9 @@
-require('dotenv').config();
-
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const app = express();
-
-const port = process.env.PORT || 8081;
+const port = 8081;
 
 // Middleware to parse JSON bodies
 app.use(bodyParser.json());
@@ -15,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // MongoDB connection string
-const mongoUri = process.env.MONGODB_URL;
+const mongoUri = 'mongodb+srv://gowthamipriya2004:o61ZWzhvSWm58rDw@cluster0.1bjyoiz.mongodb.net/educational_hub?retryWrites=true&w=majority&appName=Cluster0';
 
 // Connect to MongoDB database
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -38,23 +35,17 @@ const Student = mongoose.model('Student', studentSchema);
 
 // Route for user registration
 app.post('/registerpage', (req, res) => {
-  console.log("Received data:", req.body); // Add this line for debugging
-  const newStudent = new Student({
-    fname: req.body.fname,
-    lname: req.body.lname,
-    email: req.body.email,
-    mobile: req.body.mobile,
-    password: req.body.password,
-    dob: req.body.dob,
-    gender: req.body.gender,
-    address: req.body.address
-  });
+  console.log("Received data:", req.body); // Log received data
+  const newStudent = new Student(req.body);
 
   newStudent.save()
-    .then(data => res.json(data))
+    .then(data => {
+      console.log('Data inserted successfully:', data); // Log inserted data
+      res.json(data);
+    })
     .catch(err => {
       console.error('MongoDB Error:', err.message); // Log the MongoDB error message
-      return res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     });
 });
 
@@ -72,7 +63,7 @@ app.post('/loginpage', (req, res) => {
     })
     .catch(err => {
       console.error('MongoDB Error:', err.message); // Log the MongoDB error message
-      return res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error' });
     });
 });
 
