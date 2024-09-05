@@ -16,7 +16,7 @@ const mongoUri = 'mongodb+srv://gowthamipriya2004:o61ZWzhvSWm58rDw@cluster0.1bjy
 
 // Connect to MongoDB database
 mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB database'))
+  .then(() => console.log('Connected to database'))
   .catch(err => console.error('Database connection error:', err));
 
 // Define a Mongoose schema and model
